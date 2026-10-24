@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>麦麦积分消防员 · 积分救火报告</title>
+<style>
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: #F2F0EC;
+    color: #1A1A1A;
+    font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", system-ui, sans-serif;
+    line-height: 1.6;
+  }
+  .page {
+    max-width: 860px;
+    margin: 28px auto;
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 34px 38px 28px;
+    box-shadow: 0 10px 34px rgba(26, 26, 26, 0.10);
+  }
+  header { border-bottom: 3px solid #1A1A1A; padding-bottom: 16px; margin-bottom: 22px; }
+  .brand { font-size: 25px; font-weight: 800; letter-spacing: -0.4px; }
+  .brand .fire { color: #DA291C; }
+  .en {
+    display: inline-block; margin-left: 10px; font-size: 10.5px; font-weight: 700;
+    letter-spacing: 2.2px; color: #9A948D; vertical-align: 4px;
+  }
+  .sub { margin-top: 7px; font-size: 13.5px; color: #5C5751; }
+
+  .account { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 26px; }
+  .stat { background: #F7F5F1; border-radius: 11px; padding: 13px 14px; }
+  .stat .k { font-size: 11.5px; color: #85807A; letter-spacing: .4px; }
+  .stat .v { font-size: 24px; font-weight: 800; margin-top: 3px; letter-spacing: -.6px; }
+  .stat .v.small { font-size: 15px; font-weight: 700; padding-top: 6px; }
+  .stat.danger { background: #FDF0EE; }
+  .stat.danger .v { color: #DA291C; }
+
+  .headline {
+    display: flex; align-items: center; gap: 16px;
+    background: #1A1A1A; color: #FFF; border-radius: 14px;
+    padding: 22px 26px; margin-bottom: 24px;
+  }
+  .hl-block { text-align: center; }
+  .hl-block .l { font-size: 11.5px; color: #A9A39C; letter-spacing: .6px; }
+  .hl-block .n { font-size: 38px; font-weight: 800; line-height: 1.1; letter-spacing: -1.4px; }
+  .hl-block .c { font-size: 11px; color: #8C867F; }
+  .hl-block.bad .n { color: #E5675B; }
+  .hl-block.good .n { color: #FFC72C; }
+  .hl-arrow { font-size: 21px; color: #6E6963; }
+  .hl-saved {
+    margin-left: auto; text-align: right; border-left: 1px solid #3A3733; padding-left: 22px;
+  }
+  .hl-saved .l { font-size: 11.5px; color: #A9A39C; }
+  .hl-saved .n { font-size: 30px; font-weight: 800; color: #FFC72C; letter-spacing: -1px; }
+
+  h2 { font-size: 14px; letter-spacing: 1.4px; color: #6E6963; margin: 28px 0 12px; font-weight: 700; }
+  h2::before { content: ""; display: inline-block; width: 4px; height: 13px; background: #DA291C; margin-right: 8px; vertical-align: -1px; border-radius: 1px; }
+
+  .brow { display: flex; align-items: center; gap: 12px; margin-bottom: 9px; }
+  .blabel { width: 108px; font-size: 12.5px; color: #4A4540; text-align: right; flex-shrink: 0; }
+  .bval { width: 78px; font-size: 12.5px; font-weight: 700; color: #2B2724; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 15px; background: #EFEDE8; border-radius: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 8px; }
+
+  .plans { display: grid; gap: 13px; }
+  .plan { border: 1.5px solid #E8E5DF; border-left: 4px solid var(--accent); border-radius: 12px; padding: 16px 18px 13px; }
+  .plan-head { display: flex; align-items: baseline; justify-content: space-between; }
+  .plan-title { font-size: 15.5px; font-weight: 800; }
+  .badge { display: inline-block; margin-left: 8px; background: var(--accent); color: #FFF;
+            font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
+            vertical-align: 2px; letter-spacing: .5px; }
+  .plan-score { font-size: 19px; font-weight: 800; color: var(--accent); }
+  .plan-score span { font-size: 10.5px; color: #A8A29B; font-weight: 600; }
+  .plan-desc { margin: 3px 0 10px; font-size: 12.5px; color: #7A746E; }
+  .picks { list-style: none; margin: 0 0 12px; padding: 0; }
+  .picks li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+               padding: 6px 0; border-bottom: 1px dashed #EFEDE8; font-size: 13px; }
+  .picks li:last-child { border-bottom: none; }
+  .pname { font-weight: 700; }
+  .pcount { color: #6E6963; font-size: 12px; }
+  .ppoints { margin-left: auto; font-weight: 800; color: #DA291C; font-variant-numeric: tabular-nums; }
+  .risk { flex-basis: 100%; font-size: 11px; color: #B4570E; }
+  .safe { flex-basis: 100%; font-size: 11px; color: #7F8A80; }
+  .empty { color: #A8A29B; font-size: 12.5px; }
+  .plan-foot { display: flex; gap: 26px; font-size: 12px; margin-bottom: 9px; }
+  .fk { color: #96908A; margin-right: 6px; }
+  .fv { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .plan-foot .warn .fv { color: #DA291C; }
+
+  .notes { margin-top: 29px; padding-top: 16px; border-top: 1px solid #EFEDE8; }
+  .notes p { font-size: 11.5px; color: #8C867F; margin: 0 0 6px; }
+  .notes b { color: #5C5751; }
+  .datanote { font-size: 11.5px; color: #B4570E; background: #FFF8ED; border-radius: 7px;
+               padding: 8px 11px; margin-top: 12px !important; }
+  footer { margin-top: 18px; font-size: 10.5px; color: #B0AAA4; display: flex; justify-content: space-between; }
+
+  @media print {
+    body { background: #FFF; }
+    .page { box-shadow: none; margin: 0; max-width: 100%; padding: 12mm; }
+    .plan { break-inside: avoid; }
+  }
+  @media (max-width: 640px) {
+    .page { margin: 0; border-radius: 0; padding: 22px 16px; }
+    .account { grid-template-columns: repeat(2, 1fr); }
+    .headline { flex-wrap: wrap; gap: 10px; padding: 18px; }
+    .hl-block .n { font-size: 30px; }
+    .hl-saved { margin-left: 0; border-left: none; padding-left: 0; text-align: left; flex-basis: 100%; }
+    .blabel { width: 78px; font-size: 11.5px; }
+    .bval { width: 62px; font-size: 11.5px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="brand">麦麦<span class="fire">积分消防员</span><span class="en">MC POINTS FIREFIGHTER</span></div>
+    <div class="sub">积分到期就归零。在它烧完之前，先算一遍。</div>
+  </header>
+
+  <section class="account">
+    <div class="stat"><div class="k">可用积分</div><div class="v">4,200</div></div>
+    <div class="stat danger"><div class="k">即将过期</div><div class="v">1,800</div></div>
+    <div class="stat"><div class="k">到期日</div><div class="v small">2026-11-30</div></div>
+    <div class="stat"><div class="k">可兑商品</div><div class="v">13</div></div>
+  </section>
+
+  <section class="headline">
+    <div class="hl-block bad">
+      <div class="l">随手换 · 期望烧掉</div>
+      <div class="n">1,000</div>
+      <div class="c">分</div>
+    </div>
+    <div class="hl-arrow">→</div>
+    <div class="hl-block good">
+      <div class="l">算一遍 · 期望烧掉</div>
+      <div class="n">40</div>
+      <div class="c">分</div>
+    </div>
+    <div class="hl-saved">
+      <div class="l">挽回</div>
+      <div class="n">960</div>
+      <div class="c" style="font-size:11px;color:#8C867F">分积分</div>
+    </div>
+  </section>
+
+  <h2>四种做法，期望烧掉多少</h2>
+  <div class="brow"><div class="blabel">随手换</div><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#B0AAA4"></div></div><div class="bval">1,000 分</div></div><div class="brow"><div class="blabel">一分不浪费</div><div class="bar-track"><div class="bar-fill" style="width:16.0%;background:#DA291C"></div></div><div class="bval">160 分</div></div><div class="brow"><div class="blabel">折中方案</div><div class="bar-track"><div class="bar-fill" style="width:4.0%;background:#1A7F62"></div></div><div class="bval">40 分</div></div><div class="brow"><div class="blabel">只换用得上的</div><div class="bar-track"><div class="bar-fill" style="width:4.0%;background:#2B5AA7"></div></div><div class="bval">40 分</div></div>
+
+  <h2>方案明细</h2>
+  <div class="plans">
+    <article class="plan" style="--accent:#DA291C">
+      <div class="plan-head">
+        <div class="plan-title">一分不浪费</div>
+        <div class="plan-score">91.11<span>/100</span></div>
+      </div>
+      <p class="plan-desc">优先把积分花干净，宁可换点不太用得上的</p>
+      <ul class="picks"><li><span class="pname">巨无霸券</span><span class="pcount">×1</span><span class="ppoints">-960</span><span class="safe">券 30 天内有效</span></li><li><span class="pname">吉士汉堡券</span><span class="pcount">×1</span><span class="ppoints">-520</span><span class="safe">券 20 天内有效</span></li><li><span class="pname">小薯条券</span><span class="pcount">×1</span><span class="ppoints">-320</span><span class="risk">券 7 天到期 · 用不完风险 50%</span></li></ul>
+      <div class="plan-foot">
+        <div><span class="fk">消耗</span><span class="fv">1,800 分</span></div>
+        <div><span class="fk">剩余</span><span class="fv">0 分</span></div>
+        <div class="warn"><span class="fk">期望烧掉</span><span class="fv">160 分</span></div>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:8.9%;background:#DA291C"></div></div>
+    </article>
+    
+    <article class="plan" style="--accent:#1A7F62">
+      <div class="plan-head">
+        <div class="plan-title">折中方案<span class="badge">推荐</span></div>
+        <div class="plan-score">97.78<span>/100</span></div>
+      </div>
+      <p class="plan-desc">积分和实用性各算一半，多数人的选择</p>
+      <ul class="picks"><li><span class="pname">吉士汉堡券</span><span class="pcount">×2</span><span class="ppoints">-1,040</span><span class="safe">券 20 天内有效</span></li><li><span class="pname">麦香鱼券</span><span class="pcount">×1</span><span class="ppoints">-720</span><span class="safe">券 21 天内有效</span></li></ul>
+      <div class="plan-foot">
+        <div><span class="fk">消耗</span><span class="fv">1,760 分</span></div>
+        <div><span class="fk">剩余</span><span class="fv">40 分</span></div>
+        <div class="warn"><span class="fk">期望烧掉</span><span class="fv">40 分</span></div>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:2.2%;background:#1A7F62"></div></div>
+    </article>
+    
+    <article class="plan" style="--accent:#2B5AA7">
+      <div class="plan-head">
+        <div class="plan-title">只换用得上的</div>
+        <div class="plan-score">97.78<span>/100</span></div>
+      </div>
+      <p class="plan-desc">只换真能用掉的东西，允许留一点零头</p>
+      <ul class="picks"><li><span class="pname">吉士汉堡券</span><span class="pcount">×2</span><span class="ppoints">-1,040</span><span class="safe">券 20 天内有效</span></li><li><span class="pname">麦香鱼券</span><span class="pcount">×1</span><span class="ppoints">-720</span><span class="safe">券 21 天内有效</span></li></ul>
+      <div class="plan-foot">
+        <div><span class="fk">消耗</span><span class="fv">1,760 分</span></div>
+        <div><span class="fk">剩余</span><span class="fv">40 分</span></div>
+        <div class="warn"><span class="fk">期望烧掉</span><span class="fv">40 分</span></div>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:2.2%;background:#2B5AA7"></div></div>
+    </article>
+    </div>
+
+  <section class="notes">
+    <p><b>「期望烧掉」怎么算的：</b>没花掉的零头 ＋ 花掉了但券大概率用不完的部分。第二项按券的有效期估算——有效期短于 14 天的，按比例折算成可能用不掉的风险。</p>
+    <p><b>为什么不是「花得最干净」就好：</b>用 1600 分换 5 张 7 天到期的薯条券，账面浪费是 0，但 14 天内吃不了 5 次，这 800 分和烧掉没区别。</p>
+    <p><b>算法：</b>有界背包精确求解（二进制拆分 + 动态规划），不是贪心启发式；单测用暴力穷举交叉验证过 600 组随机数据。</p>
+    <p><b>支付边界：</b>本工具只做计算和建议。真正的兑换动作由你自己在麦当劳 App 里确认，工具不代扣积分。</p>
+    <p class="datanote">本报告使用示例数据（模拟），非真实账户。设置 MCD_MCP_TOKEN 后可用 --live 拉取你自己的数据。</p>
+  </section>
+
+  <footer>
+    <span>生成于 2026-10-23 · mc-points-firefighter v1.0.0</span>
+    <span>非麦当劳官方产品 · 数据以官方渠道实时结果为准</span>
+  </footer>
+</div>
+</body>
+</html>

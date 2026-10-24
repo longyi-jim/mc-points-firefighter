@@ -1,0 +1,39 @@
+{
+  "_note": "示例数据（模拟）。商品名称、积分价、库存与有效期均为演示用虚构值，不代表麦麦商城真实在售情况。真实运行时由 scripts/fetch_via_mcp.py 通过麦当劳 MCP 拉取。",
+  "account": {
+    "available": 4200,
+    "expiring": 1800,
+    "expiring_date": "2026-11-30",
+    "total": 12800,
+    "frozen": 0
+  },
+  "preferences": {
+    "use_window_days": 14,
+    "category_pref": {
+      "food": 1.0,
+      "drink": 0.95,
+      "snack": 0.85,
+      "dessert": 0.9,
+      "breakfast": 1.0,
+      "coupon": 0.8,
+      "merch": 0.55
+    }
+  },
+  "products": [
+    { "pid": "P320", "name": "小薯条券",            "points": 320,  "valid_days": 7,  "limit": 5, "category": "snack",    "cash": 0, "in_stock": true },
+    { "pid": "P260", "name": "香芋派券",            "points": 260,  "valid_days": 5,  "limit": 6, "category": "dessert",  "cash": 0, "in_stock": true },
+    { "pid": "P420", "name": "中杯可乐券",          "points": 420,  "valid_days": 10, "limit": 3, "category": "drink",    "cash": 0, "in_stock": true },
+    { "pid": "P520", "name": "吉士汉堡券",          "points": 520,  "valid_days": 20, "limit": 4, "category": "food",     "cash": 0, "in_stock": true },
+    { "pid": "P640", "name": "麦乐鸡（5块）券",      "points": 640,  "valid_days": 18, "limit": 3, "category": "snack",    "cash": 0, "in_stock": true },
+    { "pid": "P680", "name": "双层吉士堡券",        "points": 680,  "valid_days": 25, "limit": 2, "category": "food",     "cash": 0, "in_stock": true },
+    { "pid": "P720", "name": "麦香鱼券",            "points": 720,  "valid_days": 21, "limit": 2, "category": "food",     "cash": 0, "in_stock": true },
+    { "pid": "P880", "name": "大杯拿铁券",          "points": 880,  "valid_days": 12, "limit": 1, "category": "drink",    "cash": 0, "in_stock": true },
+    { "pid": "P960", "name": "巨无霸券",            "points": 960,  "valid_days": 30, "limit": 2, "category": "food",     "cash": 0, "in_stock": true },
+    { "pid": "P1000", "name": "10 元通用代金券",     "points": 1000, "valid_days": 60, "limit": 2, "category": "coupon",   "cash": 0, "in_stock": true },
+    { "pid": "P1140", "name": "双层鳕鱼堡套餐券",    "points": 1140, "valid_days": 30, "limit": 1, "category": "food",     "cash": 0, "in_stock": true },
+    { "pid": "P1500", "name": "麦麦周边·帆布袋",     "points": 1500, "valid_days": 90, "limit": 1, "category": "merch",    "cash": 0, "in_stock": true },
+    { "pid": "P1580", "name": "早餐三件套券",        "points": 1580, "valid_days": 45, "limit": 1, "category": "breakfast","cash": 0, "in_stock": true },
+    { "pid": "P2200", "name": "麦麦周边·保温杯",     "points": 2200, "valid_days": 90, "limit": 1, "category": "merch",    "cash": 0, "in_stock": true },
+    { "pid": "P1990", "name": "限定联名摆件",        "points": 1990, "valid_days": 60, "limit": 1, "category": "merch",    "cash": 0, "in_stock": false }
+  ]
+}
